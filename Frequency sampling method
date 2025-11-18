@@ -1,0 +1,30 @@
+%% FIR Filter Design Using Frequency Sampling Method
+
+clc; clear; close all;
+
+% Specifications
+N = 50;              % Filter order
+M = N + 1;           % Number of frequency samples
+Fc = 0.3;            % Normalized cutoff (0–1)
+
+% Frequency samples (ideal LPF)
+k = 0:M-1;
+H = double(k <= Fc*M);   % 1 for passband, 0 for stopband
+
+% Impulse response from inverse DFT
+h = real(ifft(H));
+
+% Shift to make linear phase
+h = fftshift(h);
+
+% Plot
+figure;
+subplot(2,1,1);
+stem(H); title('Frequency Samples H[k]');
+subplot(2,1,2);
+stem(h); title('Impulse Response from Frequency Sampling');
+
+% Frequency response
+figure;
+freqz(h,1,1024);
+title('Frequency Response (Frequency Sampling Method)');
